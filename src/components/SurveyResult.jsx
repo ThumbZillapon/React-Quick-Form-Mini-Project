@@ -31,3 +31,4 @@ const SurveyResult = ({ surveyData, onStartNew }) => {
 };
 
 export default SurveyResult;
+//export default
