@@ -1,3 +1,4 @@
+
 const SurveyResult = ({ surveyData, onStartNew }) => {
   return (
     <div className="bg-white rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.1)] p-10 md:p-8 sm:p-5 max-w-[600px] w-full text-center animate-slide-up mx-2.5">
@@ -32,3 +33,4 @@ const SurveyResult = ({ surveyData, onStartNew }) => {
 
 export default SurveyResult;
 //export default
+
