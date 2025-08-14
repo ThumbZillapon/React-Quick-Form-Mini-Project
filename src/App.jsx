@@ -1,35 +1,100 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from 'react';
+import { movies } from './constants/movies';
+import { validateForm } from './utils/validation';
+import SurveyForm from './components/SurveyForm';
+import SurveyResult from './components/SurveyResult';
 
 function App() {
-  const [count, setCount] = useState(0)
+  // Form data state - related data grouped together
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    selectedMovie: '',
+    comment: ''
+  });
+
+  // UI state - separated from data state
+  const [errors, setErrors] = useState({});
+  const [isSubmitted, setIsSubmitted] = useState(false);
+
+  const handleInputChange = (field, value) => {
+    setFormData(prev => ({
+      ...prev,
+      [field]: value
+    }));
+    
+    // Clear error when user starts typing
+    if (errors[field]) {
+      setErrors(prev => ({
+        ...prev,
+        [field]: ''
+      }));
+    }
+  };
+
+  const handleMovieSelect = (movieTitle) => {
+    setFormData(prev => ({
+      ...prev,
+      selectedMovie: movieTitle
+    }));
+    
+    // Clear error when user selects a movie
+    if (errors.selectedMovie) {
+      setErrors(prev => ({
+        ...prev,
+        selectedMovie: ''
+      }));
+    }
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    const validationErrors = validateForm(formData);
+    
+    if (Object.keys(validationErrors).length === 0) {
+      setIsSubmitted(true);
+      setErrors({});
+    } else {
+      setErrors(validationErrors);
+    }
+  };
+
+  const handleReset = () => {
+    setFormData({
+      name: '',
+      email: '',
+      selectedMovie: '',
+      comment: ''
+    });
+    setErrors({});
+  };
+
+  const handleStartNew = () => {
+    setIsSubmitted(false);
+    handleReset();
+  };
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="min-h-screen flex justify-center items-center p-5 sm:p-2.5">
+      {!isSubmitted ? (
+        <SurveyForm
+          formData={formData}
+          errors={errors}
+          movies={movies}
+          onInputChange={handleInputChange}
+          onMovieSelect={handleMovieSelect}
+          onSubmit={handleSubmit}
+          onReset={handleReset}
+        />
+      ) : (
+        <SurveyResult
+          surveyData={formData}
+          onStartNew={handleStartNew}
+        />
+      )}
+    </div>
+  );
 }
 
-export default App
+export default App;
