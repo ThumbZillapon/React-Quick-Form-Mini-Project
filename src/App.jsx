@@ -50,9 +50,17 @@ function App() {
   const handleSubmit = (e) => {
     e.preventDefault();
     
-    const validationErrors = validateForm(formData);
+    const trimmedData = {
+      name: formData.name.trim(),
+      email: formData.email.trim(),
+      selectedMovie: formData.selectedMovie,
+      comment: formData.comment.trim()
+    };
+
+    const validationErrors = validateForm(trimmedData);
     
     if (Object.keys(validationErrors).length === 0) {
+      setFormData(trimmedData);
       setIsSubmitted(true);
       setErrors({});
     } else {

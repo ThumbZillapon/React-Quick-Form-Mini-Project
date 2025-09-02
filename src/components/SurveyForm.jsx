@@ -16,9 +16,10 @@ const SurveyForm = ({
     <div className="bg-white rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.1)] p-10 md:p-8 sm:p-5 max-w-[600px] w-full animate-slide-up mx-2.5">
       <h1 className="text-center text-gray-700 mb-8 text-3xl md:text-2xl sm:text-xl font-semibold">แบบสำรวจความชอบภาพยนตร์</h1>
       
-      <form onSubmit={onSubmit} className="flex flex-col gap-6">
+      <form onSubmit={onSubmit} noValidate className="flex flex-col gap-6">
         <TextField
           label="ชื่อ"
+          id="name"
           value={formData.name}
           onChange={(e) => onInputChange('name', e.target.value)}
           error={errors.name}
@@ -29,6 +30,7 @@ const SurveyForm = ({
         <TextField
           label="อีเมล"
           type="email"
+          id="email"
           value={formData.email}
           onChange={(e) => onInputChange('email', e.target.value)}
           error={errors.email}
@@ -43,10 +45,12 @@ const SurveyForm = ({
           onChange={(e) => onMovieSelect(e.target.value)}
           error={errors.selectedMovie}
           required={true}
+          name="movie"
         />
 
         <TextArea
           label="ความคิดเห็น"
+          id="comment"
           value={formData.comment}
           onChange={(e) => onInputChange('comment', e.target.value)}
           placeholder="บอกความคิดเห็นของคุณเกี่ยวกับหนังที่เลือก..."
